@@ -11,7 +11,7 @@ Ideal para creadores, editores y entusiastas que usan DaVinci Resolve, OBS Studi
 Este proyecto está pensado para la comunidad: si tienes ideas, pull requests o mejoras, ¡son bienvenidas!
 
 **Autor:** [bodegafresh](https://github.com/bodegafresh)  
-**Instagram/TikTok:** [@bodegafresh_dev - Instagram](https://instagram.com/bodegafresh_dev)/[@bodegafresh_dev - Tiktok](http://www.titok.com/@bodegafresh_dev)
+**Instagram/TikTok:** [@bodegafresh_dev - Instagram](https://instagram.com/bodegafresh_dev)/[@bodegafresh_dev - Tiktok](https://www.tiktok.com/@bodegafresh_dev)
 
 ---
 
