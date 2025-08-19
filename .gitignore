@@ -15,3 +15,5 @@ ffmpeg2pass-0.log.mbtree
 *.swo
 # Archivos de sistema
 .DS_Store
+input_videos/
+output_videos/
