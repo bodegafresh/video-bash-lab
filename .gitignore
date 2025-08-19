@@ -1,0 +1,17 @@
+# Carpetas de trabajo generadas por los scripts
+thumbs/
+thumbs_labeled/
+*.vtt
+*.wav
+*.mov
+*.mp4
+*.jpg
+contact_sheet.jpg
+# Archivos temporales de ffmpeg o bash
+ffmpeg2pass-0.log
+ffmpeg2pass-0.log.mbtree
+*.tmp
+*.swp
+*.swo
+# Archivos de sistema
+.DS_Store
