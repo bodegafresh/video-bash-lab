@@ -47,64 +47,66 @@ sudo apt install ffmpeg imagemagick
     - [Instalación rápida en macOS (con Homebrew):](#instalación-rápida-en-macos-con-homebrew)
     - [Instalación rápida en Linux (Debian/Ubuntu):](#instalación-rápida-en-linux-debianubuntu)
   - [Índice de scripts](#índice-de-scripts)
-  - [thumbs\_vtt.sh](#thumbs_vttsh)
-  - [tiempo\_thumbs.sh](#tiempo_thumbssh)
-  - [thumbs\_contact\_sheet.sh](#thumbs_contact_sheetsh)
-  - [to\_resolve.sh](#to_resolvesh)
-  - [extract\_audio.sh](#extract_audiosh)
-  - [replace\_audio.sh](#replace_audiosh)
-  - [enhance\_audio\_basic.sh](#enhance_audio_basicsh)
-  - [enhance\_audio\_rnnoise.sh](#enhance_audio_rnnoisesh)
+  - [scripts/thumbs\_vtt.sh](#scriptsthumbs_vttsh)
+  - [scripts/tiempo\_thumbs.sh](#scriptstiempo_thumbssh)
+  - [scripts/thumbs\_contact\_sheet.sh](#scriptsthumbs_contact_sheetsh)
+  - [scripts/to\_resolve.sh](#scriptsto_resolvesh)
+  - [scripts/extract\_audio.sh](#scriptsextract_audiosh)
+  - [scripts/replace\_audio.sh](#scriptsreplace_audiosh)
+  - [scripts/enhance\_audio\_basic.sh](#scriptsenhance_audio_basicsh)
+  - [scripts/enhance\_audio\_rnnoise.sh](#scriptsenhance_audio_rnnoisesh)
+  - [scripts/transcribir\_ogg.sh](#scriptstranscribir_oggsh)
+  - [scripts/thumbnails.vtt](#scriptsthumbnailsvtt)
   - [Ejemplo de flujo recomendado](#ejemplo-de-flujo-recomendado)
   - [Notas y sugerencias](#notas-y-sugerencias)
   - [Exclusión de archivos procesados](#exclusión-de-archivos-procesados)
 
 ---
 
-## thumbs_vtt.sh
+## scripts/thumbs_vtt.sh
 
 Genera miniaturas y un archivo VTT para previsualización de videos (útil para reproductores web o análisis posterior).
 
 **Uso:**  
 ```bash
-./thumbs_vtt.sh input.mp4 [intervalo_segundos]
+./scripts/thumbs_vtt.sh input.mp4 [intervalo_segundos]
 ```
 - Crea una carpeta `thumbs/` con miniaturas y un archivo `thumbnails.vtt` con los tiempos de cada imagen.
 
 ---
 
-## tiempo_thumbs.sh
+## scripts/tiempo_thumbs.sh
 
 Toma las miniaturas y el archivo VTT generados por `thumbs_vtt.sh` y crea nuevas imágenes con el tiempo incrustado en cada miniatura (útil para análisis visual o IA).
 
 **Uso:**  
 ```bash
-./tiempo_thumbs.sh
+./scripts/tiempo_thumbs.sh
 ```
 - Lee `thumbnails.vtt` y las imágenes en `thumbs/`, y genera imágenes etiquetadas en `thumbs_labeled/`.
 
 ---
 
-## thumbs_contact_sheet.sh
+## scripts/thumbs_contact_sheet.sh
 
 (Opcional) Une todas las miniaturas etiquetadas en una sola imagen tipo "contact sheet" o matriz, ideal para revisión rápida o entrada a modelos de IA.
 
 **Uso:**  
 ```bash
-./thumbs_contact_sheet.sh thumbs_labeled/ 6
+./scripts/thumbs_contact_sheet.sh thumbs_labeled/ 6
 ```
 - El segundo argumento es el número de columnas (por defecto 6).
 - Requiere ImageMagick (`montage`).
 
 ---
 
-## to_resolve.sh
+## scripts/to_resolve.sh
 
 Convierte un video a un formato "mezzanine" editable y liviano para DaVinci Resolve (ProRes 422 LT + audio PCM 48kHz).
 
 **Uso:**  
 ```bash
-./to_resolve.sh input_video output.mov
+./scripts/to_resolve.sh input_video output.mov
 ```
 - Usa ProRes 422 LT (intra-frame, decodifica muy liviano).
 - Mantiene espacio de color BT.709 y 10-bit para grading.
@@ -112,38 +114,38 @@ Convierte un video a un formato "mezzanine" editable y liviano para DaVinci Reso
 
 ---
 
-## extract_audio.sh
+## scripts/extract_audio.sh
 
 Extrae el audio principal de un video a WAV 48kHz listo para procesar.
 
 **Uso:**  
 ```bash
-./extract_audio.sh input_video output.wav
+./scripts/extract_audio.sh input_video output.wav
 ```
 - Exporta en 24-bit para mayor headroom (puedes cambiar a 16-bit si prefieres).
 
 ---
 
-## replace_audio.sh
+## scripts/replace_audio.sh
 
 Reemplaza el audio de un video por un archivo WAV/AAC ya procesado, sin recomprimir el video.
 
 **Uso:**  
 ```bash
-./replace_audio.sh input_video audio_nuevo.wav output_video.mp4
+./scripts/replace_audio.sh input_video audio_nuevo.wav output_video.mp4
 ```
 - Por defecto, exporta en AAC 192k.
 - Si trabajas en MOV/ProRes y quieres PCM sin pérdidas, revisa los comentarios del script.
 
 ---
 
-## enhance_audio_basic.sh
+## scripts/enhance_audio_basic.sh
 
 Mejora automática de audio con ffmpeg: reducción de ruido básica (afftdn), normalización, compresión y ecualización.
 
 **Uso:**  
 ```bash
-./enhance_audio_basic.sh input.wav output_enhanced.wav
+./scripts/enhance_audio_basic.sh input.wav output_enhanced.wav
 ```
 - NR: afftdn=nr=12 (ajustable).
 - Normaliza a -14 LUFS.
@@ -151,16 +153,36 @@ Mejora automática de audio con ffmpeg: reducción de ruido básica (afftdn), no
 
 ---
 
-## enhance_audio_rnnoise.sh
+## scripts/enhance_audio_rnnoise.sh
 
 Mejora avanzada de audio usando reducción de ruido con RNNoise (arnndn), normalización, compresión y EQ.
 
 **Uso:**  
 ```bash
-./enhance_audio_rnnoise.sh input.wav rnnoise.model output_enhanced.wav
+./scripts/enhance_audio_rnnoise.sh input.wav rnnoise.model output_enhanced.wav
 ```
 - Descarga un modelo RNNoise compatible y pásalo como argumento.
 - Ideal para ambientes con mucho ruido.
+
+---
+
+## scripts/transcribir_ogg.sh
+
+Transcribe archivos de audio OGG a texto usando Whisper.cpp.
+
+**Uso:**  
+```bash
+./scripts/transcribir_ogg.sh archivo.ogg
+```
+- Requiere tener Whisper.cpp instalado y configurado.
+- El resultado se guarda en un archivo de texto con el mismo nombre base.
+
+---
+
+## scripts/thumbnails.vtt
+
+Archivo de ejemplo VTT generado por los scripts de miniaturas.  
+Puedes usarlo como referencia para tus propios videos o reproductores web.
 
 ---
 
@@ -168,27 +190,30 @@ Mejora avanzada de audio usando reducción de ruido con RNNoise (arnndn), normal
 
 ```bash
 # 1. Convertir a mezzanine para editar fluido:
-./to_resolve.sh input.mp4 master_edit.mov
+./scripts/to_resolve.sh input.mp4 master_edit.mov
 
 # 2. Extraer audio:
-./extract_audio.sh master_edit.mov voz_orig.wav
+./scripts/extract_audio.sh master_edit.mov voz_orig.wav
 
 # 3. Mejorar audio (elige básico o RNNoise):
-./enhance_audio_basic.sh voz_orig.wav voz_ok.wav
+./scripts/enhance_audio_basic.sh voz_orig.wav voz_ok.wav
 # o
-./enhance_audio_rnnoise.sh voz_orig.wav rnnoise.model voz_ok.wav
+./scripts/enhance_audio_rnnoise.sh voz_orig.wav rnnoise.model voz_ok.wav
 
 # 4. Reemplazar audio:
-./replace_audio.sh master_edit.mov voz_ok.wav final_edit.mov
+./scripts/replace_audio.sh master_edit.mov voz_ok.wav final_edit.mov
 
 # 5. Generar miniaturas y VTT:
-./thumbs_vtt.sh final_edit.mov 5
+./scripts/thumbs_vtt.sh final_edit.mov 5
 
 # 6. Etiquetar miniaturas con tiempo:
-./tiempo_thumbs.sh
+./scripts/tiempo_thumbs.sh
 
 # 7. (Opcional) Unir miniaturas etiquetadas en una matriz:
-./thumbs_contact_sheet.sh thumbs_labeled 6
+./scripts/thumbs_contact_sheet.sh thumbs_labeled 6
+
+# 8. (Opcional) Transcribir audio OGG:
+./scripts/transcribir_ogg.sh voz_ok.ogg
 ```
 
 ---
